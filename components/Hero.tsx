@@ -3,14 +3,15 @@ import React from 'react';
 
 const Hero: React.FC = () => {
   return (
-    <section className="text-center py-16 mb-8 bg-white rounded-lg shadow-lg">
-      <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">Your Moroccan Adventure, Your Price.</h2>
-      <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-        Welcome to Morocco's first "Name Your Price" car rental marketplace.
-        You decide the price, and our trusted local agencies will bid for your business.
-        Transparent, fair, and simple.
+    <div className="text-center py-12 md:py-20 animate-fade-in-up">
+      <h1 className="text-4xl md:text-6xl font-extrabold text-brand-dark leading-tight">
+        Your Moroccan Adventure, <span className="text-brand-primary">Your Price.</span>
+      </h1>
+      <p className="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+        The first car rental marketplace in Morocco where you name the price.
+        Submit your offer and let agencies bid for your business.
       </p>
-    </section>
+    </div>
   );
 };
 

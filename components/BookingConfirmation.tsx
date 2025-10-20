@@ -1,5 +1,5 @@
-
 import React from 'react';
+import jsPDF from 'jspdf';
 import { BookingRequest, Offer } from '../types';
 
 interface BookingConfirmationProps {
@@ -19,7 +19,40 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookingDetail
     return diffDays > 0 ? diffDays : 1;
   }, [bookingDetails.pickupDate, bookingDetails.returnDate]);
 
-  const totalCost = durationInDays * price;
+  const addOnCost = (bookingDetails.addOns.gps ? 5 : 0) + (bookingDetails.addOns.babySeat ? 7 : 0);
+  const totalCost = (durationInDays * price) + (durationInDays * addOnCost);
+
+  const handleDownloadReceipt = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(22);
+    doc.text("Kree Booking Receipt", 105, 20, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.text(`Booking ID: BK-${Date.now()}`, 14, 40);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 47);
+
+    doc.setFontSize(16);
+    doc.text("Rental Details", 14, 60);
+    doc.setFontSize(12);
+    doc.text(`Vehicle: ${car.name} or similar`, 14, 70);
+    doc.text(`Agency: ${agency.name}`, 14, 77);
+    doc.text(`Pickup: ${bookingDetails.pickupLocation} on ${new Date(bookingDetails.pickupDate).toLocaleDateString()}`, 14, 84);
+    doc.text(`Return: ${bookingDetails.pickupLocation} on ${new Date(bookingDetails.returnDate).toLocaleDateString()}`, 14, 91);
+    doc.text(`Duration: ${durationInDays} day(s)`, 14, 98);
+
+    doc.setFontSize(16);
+    doc.text("Cost Summary", 14, 115);
+    doc.setFontSize(12);
+    doc.text(`Car Rental (${durationInDays} days @ ${price} EUR/day): ${durationInDays * price} EUR`, 14, 125);
+    if(addOnCost > 0) {
+        doc.text(`Add-ons (${durationInDays} days @ ${addOnCost} EUR/day): ${durationInDays * addOnCost} EUR`, 14, 132);
+    }
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Total Paid: ${totalCost} EUR`, 14, 145);
+    
+    doc.save(`Kree-Receipt-BK-${Date.now()}.pdf`);
+  }
 
   return (
     <div className="max-w-3xl mx-auto text-center animate-fade-in-up">
@@ -56,18 +89,32 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({ bookingDetail
               <p className="font-semibold">Total Duration</p>
               <p className="text-gray-600">{durationInDays} day(s)</p>
             </div>
+             {(bookingDetails.addOns.gps || bookingDetails.addOns.babySeat) && (
+              <div className="md:col-span-2">
+                <p className="font-semibold">Selected Add-ons</p>
+                <ul className="list-disc list-inside text-gray-600">
+                  {bookingDetails.addOns.gps && <li>GPS Navigation</li>}
+                  {bookingDetails.addOns.babySeat && <li>Baby Seat</li>}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="text-left">
             <h3 className="text-xl font-semibold mb-2 text-brand-dark">Total Price</h3>
             <p className="text-4xl font-bold text-brand-primary">{totalCost} <span className="text-2xl">EUR</span></p>
-            <p className="text-gray-500">({price} EUR x {durationInDays} days)</p>
+            <p className="text-gray-500">(Car: {price} EUR/day, Add-ons: {addOnCost} EUR/day)</p>
         </div>
 
-        <button onClick={onStartOver} className="mt-8 bg-brand-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors">
-          Make Another Booking
-        </button>
+        <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <button onClick={onStartOver} className="bg-brand-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors">
+              Make Another Booking
+            </button>
+             <button onClick={handleDownloadReceipt} className="bg-brand-secondary text-brand-dark font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-colors">
+              Download Receipt
+            </button>
+        </div>
       </div>
     </div>
   );

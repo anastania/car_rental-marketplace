@@ -1,15 +1,17 @@
-export enum AppState {
-  FORM,
-  BIDDING,
-  CONFIRMATION
-}
-
 export enum Page {
-  HOME,
-  ABOUT,
-  CONTACT,
-  TERMS,
-  PROFILE,
+  HOME = 'home',
+  BIDDING = 'bidding',
+  PAYMENT = 'payment',
+  CONFIRMATION = 'confirmation',
+  ABOUT = 'about',
+  CONTACT = 'contact',
+  TERMS = 'terms',
+  PROFILE = 'profile',
+  MANAGE_BOOKING = 'manage_booking',
+  ADMIN_DASHBOARD = 'admin_dashboard',
+  ADMIN_USERS = 'admin_users',
+  ADMIN_BOOKINGS = 'admin_bookings',
+  ADMIN_CARS = 'admin_cars',
 }
 
 export enum CarCategory {
@@ -17,7 +19,12 @@ export enum CarCategory {
   COMPACT = 'Compact',
   SUV = 'SUV',
   LUXURY = 'Luxury',
-  VAN = 'Van'
+  VAN = 'Van',
+}
+
+export interface AddOns {
+  gps: boolean;
+  babySeat: boolean;
 }
 
 export interface BookingRequest {
@@ -26,42 +33,49 @@ export interface BookingRequest {
   returnDate: string;
   carCategory: CarCategory;
   proposedPrice: number;
+  addOns: AddOns;
+}
+
+export interface Car {
+  id: string;
+  name: string;
+  category: CarCategory;
+  imageUrl: string;
+  seats: number;
+  storage: string;
 }
 
 export interface Agency {
+  id: string;
   name: string;
   rating: number;
   logoUrl: string;
 }
 
-export interface Car {
-    name: string;
-    imageUrl: string;
-    category: CarCategory;
-    seats: number;
-    storage: string;
-}
-
 export interface Offer {
   id: string;
-  car: Car;
   agency: Agency;
-  price: number; // per day
+  car: Car;
+  price: number;
 }
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: 'customer' | 'admin';
 }
 
+export type BookingStatus = 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled' | 'Confirmed';
+
+
 export interface BookingHistoryItem {
-  bookingId: string;
-  carName: string;
-  agencyName: string;
-  pickupDate: string;
-  returnDate: string;
-  totalPrice: number;
-  status: 'Completed' | 'Upcoming' | 'Cancelled';
-  carImageUrl: string;
+    bookingId: string;
+    carName: string;
+    carImageUrl: string;
+    agencyName: string;
+    pickupDate: string;
+    returnDate: string;
+    totalPrice: number;
+    status: BookingStatus;
 }
