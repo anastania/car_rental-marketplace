@@ -1,4 +1,4 @@
-
+// FIX: Restored file content to fix parsing errors and removed stale comments.
 import React from 'react';
 import { User, BookingHistoryItem, BookingStatus } from '../types';
 
@@ -11,6 +11,7 @@ interface UserProfileProps {
 const getStatusChipClass = (status: BookingStatus) => {
     switch(status) {
         case 'Completed': return 'bg-green-100 text-green-800';
+        case 'Confirmed':
         case 'Upcoming': return 'bg-blue-100 text-blue-800';
         case 'Ongoing': return 'bg-yellow-100 text-yellow-800';
         case 'Cancelled': return 'bg-red-100 text-red-800';

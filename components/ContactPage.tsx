@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { GoogleGenAI } from '@google/genai';
 
+// FIX: Initialize the GoogleGenAI client once at the module level
+// to avoid creating a new instance on every function call.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+
 const ContactPage: React.FC = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -13,13 +17,12 @@ const ContactPage: React.FC = () => {
         setStatus('');
         try {
             // As per guidelines, the API key is handled by environment variables.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
             const prompt = `Based on the following keywords, write a polite and professional inquiry message for a car rental company named Kree. The user's name is ${name || 'a customer'} and their email is ${email || 'not provided'}. Keywords: "${message}". Keep it concise and clear.`;
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: prompt,
             });
-            // fix: Use response.text to get the generated content as a string.
+            // Using response.text to get the generated content as a string is correct.
             setMessage(response.text);
         } catch (error) {
             console.error("Error generating message:", error);

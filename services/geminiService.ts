@@ -3,7 +3,8 @@ import { GoogleGenAI } from "@google/genai";
 
 // As per guidelines, the API key is obtained from the environment variable.
 // An instance is created directly. Assume process.env.API_KEY is available.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// FIX: Added non-null assertion to satisfy TypeScript's strict null checks, as the guidelines guarantee the API_KEY is present.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
 
 
 export const generateTripItinerary = async (location: string, duration: number): Promise<string> => {

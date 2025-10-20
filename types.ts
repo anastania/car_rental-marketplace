@@ -1,62 +1,13 @@
 export enum Page {
-  HOME = 'home',
-  BIDDING = 'bidding',
-  PAYMENT = 'payment',
-  CONFIRMATION = 'confirmation',
-  ABOUT = 'about',
-  CONTACT = 'contact',
-  TERMS = 'terms',
-  PROFILE = 'profile',
-  MANAGE_BOOKING = 'manage_booking',
-  ADMIN_DASHBOARD = 'admin_dashboard',
-  ADMIN_USERS = 'admin_users',
-  ADMIN_BOOKINGS = 'admin_bookings',
-  ADMIN_CARS = 'admin_cars',
-}
-
-export enum CarCategory {
-  ECONOMY = 'Economy',
-  COMPACT = 'Compact',
-  SUV = 'SUV',
-  LUXURY = 'Luxury',
-  VAN = 'Van',
-}
-
-export interface AddOns {
-  gps: boolean;
-  babySeat: boolean;
-}
-
-export interface BookingRequest {
-  pickupLocation: string;
-  pickupDate: string;
-  returnDate: string;
-  carCategory: CarCategory;
-  proposedPrice: number;
-  addOns: AddOns;
-}
-
-export interface Car {
-  id: string;
-  name: string;
-  category: CarCategory;
-  imageUrl: string;
-  seats: number;
-  storage: string;
-}
-
-export interface Agency {
-  id: string;
-  name: string;
-  rating: number;
-  logoUrl: string;
-}
-
-export interface Offer {
-  id: string;
-  agency: Agency;
-  car: Car;
-  price: number;
+  HOME = 'HOME',
+  ABOUT = 'ABOUT',
+  CONTACT = 'CONTACT',
+  PROFILE = 'PROFILE',
+  TERMS = 'TERMS',
+  ADMIN_DASHBOARD = 'ADMIN_DASHBOARD',
+  ADMIN_USERS = 'ADMIN_USERS',
+  ADMIN_BOOKINGS = 'ADMIN_BOOKINGS',
+  ADMIN_CARS = 'ADMIN_CARS',
 }
 
 export interface User {
@@ -66,8 +17,51 @@ export interface User {
   role: 'customer' | 'admin';
 }
 
-export type BookingStatus = 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled' | 'Confirmed';
+export enum CarCategory {
+  ECONOMY = 'Economy',
+  COMPACT = 'Compact',
+  MIDSIZE = 'Mid-size',
+  SUV = 'SUV',
+  LUXURY = 'Luxury',
+  VAN = 'Van',
+}
 
+export interface BookingRequest {
+  pickupLocation: string;
+  pickupDate: string;
+  returnDate: string;
+  carCategory: CarCategory;
+  proposedPrice: number;
+  addOns: {
+    gps: boolean;
+    babySeat: boolean;
+  };
+}
+
+export interface Agency {
+    id: string;
+    name: string;
+    rating: number;
+    logoUrl: string;
+}
+
+export interface Car {
+    id: string;
+    name: string;
+    category: CarCategory;
+    imageUrl: string;
+    seats: number;
+    storage: string; // e.g., '2 bags'
+}
+
+export interface Offer {
+    id: string;
+    agency: Agency;
+    car: Car;
+    price: number; // price per day
+}
+
+export type BookingStatus = 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled' | 'Confirmed';
 
 export interface BookingHistoryItem {
     bookingId: string;

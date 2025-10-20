@@ -1,6 +1,6 @@
-
+// FIX: Restored file content to fix parsing errors and removed a stale 'FIX' comment.
 import React, { useState, useEffect } from 'react';
-import { BookingRequest, Offer } from '../types';
+import { BookingRequest, Offer, CarCategory } from '../types';
 import OfferCard from './OfferCard';
 import EditOfferModal from './EditOfferModal';
 import { CARS_DATA, AGENCIES } from '../constants';
@@ -27,7 +27,7 @@ const BiddingProcess: React.FC<BiddingProcessProps> = ({ bookingDetails: initial
 
       AGENCIES.forEach((agency, index) => {
         // Simple logic to decide if an agency makes an offer
-        const priceDifference = bookingDetails.proposedPrice - (20 + index * 2 + (Object.values(bookingDetails.carCategory).indexOf(bookingDetails.carCategory) * 5)); // Base price for category
+        const priceDifference = bookingDetails.proposedPrice - (20 + index * 2 + (Object.values(CarCategory).indexOf(bookingDetails.carCategory) * 5)); // Base price for category
         if (priceDifference > -5 && relevantCars.length > 0) {
           const car = relevantCars[index % relevantCars.length];
           const offerPrice = bookingDetails.proposedPrice + Math.floor(Math.random() * 6) - 2; // +/- a few euros
